@@ -10,27 +10,46 @@
 // Al termine della partita il software deve comunicare il punteggio, 
 // cioè il numero di volte che l’utente ha inserito un numero consentito.
 
-
 const mine = 16;
 
 var mineArray = [];
+var ggArray = []
 
+var tentativi = ( 100 - mine )
 
-
-flowers(mine);
-console.log(mineArray);
-
-
-function myBtn(){
-    for ( i = 0; i < 1; i++){
-        utnNum = parseInt(prompt("Inserisci un numero da 1 a 100"));
-        if (arrayContain(utnNum, mineArray)) {
-            alert("Hai perso!")
-        } else {
-            alert("Nessuna Mina")
-        }
+while (mineArray.length < mine) {
+    var generateMine = flowers(1, 100);
+    if (arrayContain(generateMine, mineArray) == false){
+        mineArray.push(generateMine)
     }
 }
+console.log(mineArray);
+var lose = false;
+
+while ((ggArray.length < 84) && (lose == false)) {
+    do {
+        var utnNum = parseInt(prompt("Inserisci un numero da 1 a 100"));
+    } while (isNaN(utnNum) || (utnNum < 0) || (utnNum > 100));
+    lose = false
+    if (arrayContain(utnNum, mineArray)) {
+        alert("Hai perso!");
+        lose = true;
+    } else if (arrayContain(utnNum, mineArray) == false) {
+        alert("Nessuna Mina");
+        ggArray.push(utnNum);
+    } else if (arrayContain(utnNum, ggArray)) {
+        alert("Numero gia inserito, riprova.");
+    } else if ( ggArray.length == 84) {
+        alert("Hai vinto");
+    }
+    i++
+}
+
+console.log(ggArray.length);
+alert("Hai totalizzato " + ggArray.length + " punti!");
+
+// FUNZIONI
+
 
 
 function arrayContain(num, array){
@@ -42,13 +61,6 @@ function arrayContain(num, array){
     return false
 }
 
-function flowers(sixTeen) {
-    for ( i = 1; i <= sixTeen; i++){
-        random = Math.floor(Math.random()*100 + 1);
-        if (random == random){
-            random = random;
-        }
-        mineArray.push(random);
-    }
-    return mine;
+function flowers(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
